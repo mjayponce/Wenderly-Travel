@@ -189,3 +189,25 @@
     document.querySelectorAll('.map-city').forEach(function(b){
       b.classList.remove('bg-teal-600','text-white','border-teal-600');
     });
+var name=sel.value;
+    fetch('https://nominatim.openstreetmap.org/search?format=json&limit=1&q='+encodeURIComponent(name))
+      .then(function(r){return r.json();})
+      .then(function(res){
+        if(!res.length||sel.value!==name)return;
+        var b=res[0].boundingbox.map(parseFloat);
+        frame.src='https://www.openstreetmap.org/export/embed.html?bbox='+[b[2],b[0],b[3],b[1]].join(',')+'&layer=mapnik';
+      })
+      .catch(function(){});
+  });
+})();
+(function(){
+  document.getElementById('sideExit').addEventListener('click',function(){
+    if(confirm('Exit Wanderly?')){
+      window.close();
+      setTimeout(function(){location.href='about:blank';},200);
+    }
+  });
+})();
+</script>
+</body>
+</html>
